@@ -23,12 +23,17 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
-
+import {constantRoutes} from '@/router'
 export default {
+  data (){
+    return{
+      permission_routes:constantRoutes
+    }
+  },
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
-      'permission_routes',
+      // 'permission_routes',
       'sidebar'
     ]),
     activeMenu() {

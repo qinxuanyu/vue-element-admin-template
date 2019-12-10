@@ -12,7 +12,7 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
+          v-model="loginForm.loginName"
           placeholder="Username"
           name="username"
           type="text"
@@ -29,7 +29,7 @@
           <el-input
             :key="passwordType"
             ref="password"
-            v-model="loginForm.password"
+            v-model="loginForm.passWord"
             :type="passwordType"
             placeholder="Password"
             name="password"
@@ -76,6 +76,7 @@
 <script>
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
+import md5 from 'md5'
 
 export default {
   name: 'Login',
@@ -97,12 +98,12 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        loginName: 'admin',
+        passWord: '123456'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        loginName: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        passWord: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
       capsTooltip: false,
@@ -163,15 +164,27 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
+          this.loginForm.passWord = md5(this.loginForm.passWord)
+          this.$api({
+            method:'post',
+            data:this.loginForm,
+            url:'/web/admin/index.do'
+          }).then((result) => {
+            console.log(this.$store);
+            // this.$store.commit('SET_TOKEN','admin')        //设置固定的token
+            this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+            console.log(this.$router);
+          }).catch((err) => {
+            
+          });
+          // this.$store.dispatch('user/login', this.loginForm)
+          //   .then(() => {
+          //     this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+          //     this.loading = false
+          //   })
+          //   .catch(() => {
+          //     this.loading = false
+          //   })
         } else {
           console.log('error submit!!')
           return false

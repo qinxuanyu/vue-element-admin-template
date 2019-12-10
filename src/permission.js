@@ -1,5 +1,6 @@
 import router from './router'
 import store from './store'
+import {constantRoutes} from './router'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
@@ -9,7 +10,8 @@ import getPageTitle from '@/utils/get-page-title'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
-
+console.log(constantRoutes);
+router.addRoutes(constantRoutes); //不需要权限验证
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
@@ -57,15 +59,16 @@ router.beforeEach(async(to, from, next) => {
     }
   } else {
     /* has no token*/
-
-    if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
-      next()
-    } else {
-      // other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`)
-      NProgress.done()
-    }
+    next()
+    NProgress.done()
+    // if (whiteList.indexOf(to.path) !== -1) {
+    //   // in the free login whitelist, go directly
+    //   next()
+    // } else {
+    //   // other pages that do not have permission to access are redirected to the login page.
+    //   next(`/login?redirect=${to.path}`)
+    //   NProgress.done()
+    // }
   }
 })
 

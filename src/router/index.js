@@ -83,18 +83,32 @@ export const constantRoutes = [
       }
     ]
   },
-  // {
-  //   path: '/documentation',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/documentation/index'),
-  //       name: 'Documentation',
-  //       meta: { title: 'Documentation', icon: 'documentation', affix: true }
-  //     }
-  //   ]
-  // },
+  {
+    path: '/extension',
+    component: Layout,
+    children: [
+      {
+        path: '/extension/list',
+        component: () => import('@/pages/extension/list'),
+        name: 'extensionList',
+        meta: { title: '推广管理', icon: 'documentation'},
+
+      }
+    ]
+  },
+  {
+    path: '/extension',
+    component: Layout,
+    children: [
+      {
+        path: '/apply/list',
+        component: () => import('@/pages/apply/list'),
+        name: 'applyList',
+        meta: { title: '展位申请管理', icon: 'documentation'},
+
+      }
+    ]
+  },
   // {
   //   path: '/guide',
   //   component: Layout,

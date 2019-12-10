@@ -18,6 +18,8 @@ import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
+import api from '@/utils/api'
+import mixins from '@/mixins'  //全局mixins
 
 /**
  * If you don't want to use mock-server
@@ -35,13 +37,15 @@ if (process.env.NODE_ENV === 'production') {
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
-
+Vue.prototype.$api = api;
+Vue.mixin(mixins)
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
 Vue.config.productionTip = false
+
 
 new Vue({
   el: '#app',
