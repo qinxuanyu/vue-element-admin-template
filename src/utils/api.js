@@ -2,6 +2,7 @@ import axios from 'axios'
 import Vue from 'vue';
 import store from '@/store'
 import route from "@/router"
+import NProgress from 'nprogress' // progress bar
 const token = localStorage.getItem("token");
 import { Message } from 'element-ui';
 const api = axios.create()
@@ -12,11 +13,11 @@ const api = axios.create()
 
 // 请求拦截
 api.interceptors.request.use(function (config) {
- 
+  NProgress.start()
 
-  if (token && !axios.defaults.headers.common['token']) {
-    config.headers.token = token;
-  }
+  // if (token && !axios.defaults.headers.common['token']) {
+  //   config.headers.token = token;
+  // }
 
   return config
 }, function (error) {
@@ -35,6 +36,7 @@ api.interceptors.response.use(function (response) {
   // if(response.data.flag !== 0){
   //   return Toast(response.data.message)
   // }
+  NProgress.done()
   if(response.status && response.status == 200){
     if(response.data && response.data.flag == 0){
       return Promise.resolve(response.data.results)
@@ -50,7 +52,7 @@ api.interceptors.response.use(function (response) {
   }
   
 }, function (error) {
- 
+  NProgress.done()
   Message({
     message: error.message,
     type: 'error',

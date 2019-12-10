@@ -28,10 +28,10 @@
                 label="商品图片"
                 >
                 <template slot-scope="scope">
-                    <img :src="scope.row.thumbnail" width="80px" alt="">
+                    <img :src="'/web/shop/img/download.do?fileName='+scope.row.thumbnail" height="80px" alt="">
                 </template>
             </el-table-column>
-             <el-table-column
+             <!-- <el-table-column
                 prop="createTime"
                 label="创建时间"
                >
@@ -39,7 +39,7 @@
                     <span>{{scope.row.createTime | parseTime}}</span>
                 </template>
                <span></span>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
                 label="操作"
                 >
@@ -77,14 +77,14 @@
              <el-form-item label="联系电话">
                 <el-input v-model="form.phone" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="商品图片">
+            <el-form-item label="商品图片(建议图片尺寸341*341px)">
                 <el-upload
                     class="avatar-uploader"
                     action="/web/shop/img/uploadImg.do"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     >
-                    <img v-if="form.thumbnail" :src="form.thumbnail" class="avatar">
+                    <img v-if="form.thumbnail" :src="'/web/shop/img/download.do?fileName='+form.thumbnail" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
@@ -145,7 +145,10 @@
                         type:'success',
                         message:'添加成功'
                     })
-                    this.getList()
+                    this.getList();
+                    Object.keys(this.form).forEach(item =>{
+                        this.form[item] = ''
+                    })
                 }).catch((err) => {
                     
                 });

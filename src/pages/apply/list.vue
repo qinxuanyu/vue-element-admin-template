@@ -131,7 +131,7 @@
             },
             changeStatus (data,status){
                 console.log(data);
-                this.$prompt('请输入邮箱', '提示', {
+                this.$prompt('请输入拒绝理由', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     }).then(({ value }) => {
