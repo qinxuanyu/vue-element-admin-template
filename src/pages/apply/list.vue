@@ -130,10 +130,10 @@
                 }
             },
             changeStatus (data,status){
-                console.log(data);
-                this.$prompt('请输入拒绝理由', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
+                if(status == 2){
+                    this.$prompt('请输入拒绝理由', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
                     }).then(({ value }) => {
                         if(status == 2 && !value){
                             return this.$message({
@@ -141,28 +141,44 @@
                                 message:'请输入拒绝理由'
                             })
                         }
-                        this.$api({
-                            url:'/web/admin/updateBoothStatus.do',
-                            method:'post',
-                            data:{
-                                boothId:data.boothId,
-                                status:status,
-                                details:value
-                            }
-                        }).then((result) => {
-                            this.$message({
-                                type:'success',
-                                message:'处理成功'
-                            })
-                            this.getList()
-                        }).catch((err) => {
-                            
-                        });
+                        this.submitData(data,status,value)
+                        
                     }).catch(() => {
-                   
+                
                     });
+                }else if(status == 0){
+                     this.$confirm('确认处理?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        }).then(() => {
+                            this.submitData(data,status)
+                        }).catch(() => {
+                           
+                        });
+                }
+
+               
                 
                 
+            },
+            submitData (data,status,value){
+                this.$api({
+                    url:'/web/admin/updateBoothStatus.do',
+                    method:'post',
+                    data:{
+                        boothId:data.boothId,
+                        status:status,
+                        details:value
+                    }
+                }).then((result) => {
+                    this.$message({
+                        type:'success',
+                        message:'处理成功'
+                    })
+                    this.getList()
+                }).catch((err) => {
+                    
+                });
             }
         },
         created (){

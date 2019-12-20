@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-
+const production =  process.env.NODE_ENV === 'production';
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -24,7 +24,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/page/admin',
+  publicPath: production ? '/page/admin' :'/',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: false,

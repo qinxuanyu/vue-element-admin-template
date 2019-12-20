@@ -17,6 +17,7 @@
             <el-table-column
                 prop="shopName"
                 label="商品名称"
+                width="180px"
                 >
             </el-table-column>
              <el-table-column
@@ -26,22 +27,21 @@
             </el-table-column>
             <el-table-column
                 label="商品图片"
+                width="180px"
                 >
                 <template slot-scope="scope">
                     <img :src="'/web/shop/img/download.do?fileName='+scope.row.thumbnail" height="80px" alt="">
                 </template>
             </el-table-column>
-             <!-- <el-table-column
-                prop="createTime"
-                label="创建时间"
+             <el-table-column
+                prop="clicks"
+                label="点击量"
+                width="180px"
                >
-                <template slot-scope="scope">
-                    <span>{{scope.row.createTime | parseTime}}</span>
-                </template>
-               <span></span>
-            </el-table-column> -->
+            </el-table-column>
             <el-table-column
                 label="操作"
+                width="180px"
                 >
                 <template slot-scope="scope">
                      <el-button
@@ -69,7 +69,7 @@
        <el-dialog title="添加商品" :visible.sync="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="商品名称">
-                <el-input v-model="form.shopName" autocomplete="off"></el-input>
+                <el-input v-model="form.shopName" type="textarea"  placeholder="请输入内容" maxlength="125" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="跳转url">
                 <el-input v-model="form.shopUrl" autocomplete="off"></el-input>
@@ -77,7 +77,7 @@
              <el-form-item label="联系电话">
                 <el-input v-model="form.phone" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="商品图片(建议图片尺寸341*341px)">
+            <el-form-item label="商品图片(建议图片尺寸300*300px)">
                 <el-upload
                     class="avatar-uploader"
                     action="/web/shop/img/uploadImg.do"
@@ -128,13 +128,16 @@
             addGoods(){
                 // if(!this.form)
                 Object.keys(this.form).forEach(item =>{
-                    if(!this.form[item]){
+                   
+                })
+                for (const key in this.form) {
+                     if(!this.form[key]){
                         return this.$message({
                             message: '请输入完整的内容',
                             type: 'warning'
                         })
                     }
-                })
+                }
                 this.$api({
                     url:'/web/admin/addExtensionShop.do',
                     method:'post',
